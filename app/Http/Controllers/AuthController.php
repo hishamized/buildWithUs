@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
 
 class AuthController extends Controller
 {
@@ -74,6 +76,43 @@ class AuthController extends Controller
     // Authentication failed, return back with errors
     return back()->withErrors(['login' => 'Invalid credentials']);
 }
+
+public function changePassword(Request $request)
+{
+    // Get the authenticated user's ID
+    $userId = auth()->id();
+     // Retrieve the user by ID
+     $user = User::find($userId);
+
+    // Validate the request
+    $request->validate([
+        'current_password' => 'required',
+        'new_password' => 'required|min:8',
+        'confirm_password' => 'required|min:8',
+    ]);
+
+    // Check if the new password and confirmation password match
+    if ($request->new_password !== $request->confirm_password) {
+        return redirect()->route('profile')->with('error', 'Please make sure you match the new passwords.');
+    }
+
+
+
+
+
+    // Check if the current password matches the user's password in the database
+    if (!Hash::check($request->current_password, $user->password)) {
+        return redirect()->route('profile')->with('error', 'Incorrect current password.');
+    }
+
+    // Update the user's password
+    $user->password = Hash::make($request->new_password);
+    $user->save();
+
+    return redirect()->route('profile')->with('success', 'Password changed successfully.');
+}
+
+
 
 
     public function logout()

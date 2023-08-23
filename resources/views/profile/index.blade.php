@@ -1,6 +1,24 @@
 @extends('layouts.app') <!-- Use your layout file, e.g., 'app.blade.php' -->
 @section('title', 'My Profile')
 @section('content') <!-- Start of content section -->
+
+
+ <!-- Display validation errors -->
+ @if (session('error'))
+                <div class="alert alert-danger">
+                    <ul>
+                    <li>{{ session('error') }}</li>
+                    </ul>
+                </div>
+            @endif
+
+            <!-- Display success message, if any -->
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -41,7 +59,7 @@
         <strong>Resume:</strong>
         @if ($profile->resume)
             <a href="{{ asset('storage/' . $profile->resume) }}" target="_blank">
-                <img src="{{ asset('path-to-file-icon.png') }}" alt="Resume Icon" width="32" height="32">
+            <i class="fa-solid fa-file-pdf"></i> <p>Open Resume</p>
             </a>
         @else
             N/A
@@ -130,6 +148,69 @@
 
 </div>
 
+
+<div class="container my-5">
+<!-- Button to reveal the password change form -->
+<button id="change-password-btn" class="btn btn-primary">Change Password</button>
+
+<!-- Password change form (initially hidden) -->
+<div id="change-password-form" style="display: none;">
+    <!-- Display the username of the logged-in user -->
+    <h4>Change Password for {{ auth()->user()->name }}</h4>
+
+    <form method="POST" action="{{ route('change-password') }}">
+        @csrf
+
+        <div class="card-body">
+
+        <div class="form-group">
+            <strong>Your username is : {{ auth()->user()->username }}</strong>
+        </div>
+
+        <!-- Current Password -->
+        <div class="form-group">
+            <label for="current_password">Current Password:</label>
+            <input
+                type="password"
+                class="form-control"
+                id="current_password"
+                name="current_password"
+                required
+            >
+        </div>
+
+        <!-- New Password -->
+        <div class="form-group">
+            <label for="new_password">New Password:</label>
+            <input
+                type="password"
+                class="form-control"
+                id="new_password"
+                name="new_password"
+                required
+            >
+        </div>
+
+        <!-- Confirm New Password -->
+        <div class="form-group">
+            <label for="confirm_password">Confirm New Password:</label>
+            <input
+                type="password"
+                class="form-control"
+                id="confirm_password"
+                name="confirm_password"
+                required
+            >
+        </div>
+
+        <button type="submit" class="btn btn-primary">Change Password</button>
+    </form>
+</div>
+
+</div>
+
+
+
 @section('scripts')
 <script>
     // Get references to the button and the form
@@ -144,6 +225,20 @@
         } else {
             updateProfileForm.style.display = 'none';
         }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const changePasswordButton = document.getElementById('change-password-btn');
+        const changePasswordForm = document.getElementById('change-password-form');
+
+        changePasswordButton.addEventListener('click', function () {
+            // Toggle the visibility of the password change form
+            if (changePasswordForm.style.display === 'none') {
+                changePasswordForm.style.display = 'block';
+            } else {
+                changePasswordForm.style.display = 'none';
+            }
+        });
     });
 </script>
 @endsection
