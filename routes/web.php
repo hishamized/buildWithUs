@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
+
 
 
 /*
@@ -34,6 +36,15 @@ Route::post('/login', [AuthController::class, 'login']);
 
 //Logout route
 Route::post('/logout', 'App\Http\Controllers\AuthController@logout')->name('logout')->middleware('auth');
+
+
+
+Route::middleware(['auth'])->group(function () {
+    // Display and update the user's profile data
+    Route::get('/profile', 'App\Http\Controllers\ProfileController@index')->name('profile');
+    Route::post('/profile', 'App\Http\Controllers\ProfileController@update')->name('profile.update');
+});
+
 
 
 

@@ -35,6 +35,11 @@
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </li>
+                @auth
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('profile') }}">My Profile</a>
+                </li>
+                @endauth
             </ul>
         </div>
     </div>
