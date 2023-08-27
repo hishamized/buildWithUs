@@ -12,6 +12,6 @@
 <div class="container mt-5">
     <h1>Welcome to My Laravel App</h1>
     <p>This is the welcome page content.</p>
-    <!-- Additional content for the welcome page -->
+
 </div>
 @endsection

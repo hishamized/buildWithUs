@@ -18,15 +18,15 @@ class ProfileController extends Controller
 
 public function edit()
 {
-    $user = auth()->user(); // Get the authenticated user
+    $user = auth()->user();
     return view('profile.edit', compact('user'));
 }
 
 public function update(Request $request)
 {
-    // 1. Validation
+
     $validatedData = $request->validate([
-        'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:1024', // Example validation for the profile picture, adjust as needed
+        'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:1024',
         'street_address' => 'nullable|string|max:255',
         'country' => 'nullable|string|max:255',
         'state' => 'nullable|string|max:255',
@@ -37,18 +37,18 @@ public function update(Request $request)
         'date_of_birth' => 'nullable|date',
         'adhaar_card' => 'nullable|string|max:12',
         'skill_set' => 'nullable|string',
-        'resume' => 'nullable|mimes:pdf,doc,docx|max:1024', // Example validation for the resume file, adjust as needed
+        'resume' => 'nullable|mimes:pdf,doc,docx|max:1024',
     ]);
 
-    // 2. Authorization
+
     $user = auth()->user();
     $profile = $user->profile;
 
-    // Check if the user has a profile and the profile belongs to them
-    if ($user->profile && $user->profile->user_id === $user->id) {
-        // User has a profile, so update it
 
-        // Delete old files if they exist
+    if ($user->profile && $user->profile->user_id === $user->id) {
+
+
+
         if ($request->hasFile('profile_picture') && Storage::disk('public')->exists($profile->profile_picture)) {
             Storage::disk('public')->delete($profile->profile_picture);
         }
@@ -57,27 +57,30 @@ public function update(Request $request)
             Storage::disk('public')->delete($profile->resume);
         }
 
-        // Fill the profile model with the validated data
+
         $profile->fill($validatedData);
 
-        // Handle file uploads for profile picture and resume if provided
+
         if ($request->hasFile('profile_picture')) {
             $profile->profile_picture = $request->file('profile_picture')->store('profile_pictures', 'public');
         }
 
         if ($request->hasFile('resume')) {
             $profile->resume = $request->file('resume')->store('resumes', 'public');
+
         }
 
-        $profile->save(); // Save the updated profile data to the database
+        $profile->skill_set = json_encode(explode(', ', $request->input('skill_set')));
 
-        // Redirect back with a success message
+        $profile->save();
+
+
         return redirect()->route('profile')->with('success', 'Profile updated successfully.');
     } else {
-        // User does not have a profile, create one
-        $newProfile = new Profile($validatedData); // Create a new Profile model with the validated data
 
-        // Handle file uploads for profile picture and resume if provided
+        $newProfile = new Profile($validatedData);
+
+
         if ($request->hasFile('profile_picture')) {
             $newProfile->profile_picture = $request->file('profile_picture')->store('profile_pictures', 'public');
         }
@@ -86,12 +89,13 @@ public function update(Request $request)
             $newProfile->resume = $request->file('resume')->store('resumes', 'public');
         }
 
-        // Associate the profile with the user
+        $newProfile->skill_set = json_encode(explode(', ', $request->input('skill_set')));
+
         $newProfile->user()->associate($user);
 
-        $newProfile->save(); // Save the new profile to the database
+        $newProfile->save();
 
-        // Redirect back with a success message
+
         return redirect()->route('profile')->with('success', 'Profile created and updated successfully.');
     }
 }

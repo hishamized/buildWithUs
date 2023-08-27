@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ClientController;
 
 
 
@@ -22,32 +23,55 @@ Route::get('/', function () {
 });
 
 
-// Display the registration form
+
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 
-// Handle the registration form submission
+
 Route::post('/register', [AuthController::class, 'register']);
 
-// Display the login form
+
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 
-// Handle the login form submission
+
 Route::post('/login', [AuthController::class, 'login']);
 
-//Logout route
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 
+Route::post('/post-job', [ClientController::class, 'postJob'])->name('submit-job');
 
 
 Route::middleware(['auth'])->group(function () {
-    // Display and update the user's profile data
+
     Route::get('/profile', 'App\Http\Controllers\ProfileController@index')->name('profile');
     Route::post('/profile', 'App\Http\Controllers\ProfileController@update')->name('profile.update');
 
-    //Route to change password
+
     Route::post('/change-password', [AuthController::class, 'changePassword'])->name('change-password');
+    Route::post('/post-job', [ClientController::class, 'postJob'])->name('postJob');
+
+    Route::get('/job-details/{job}', [ClientController::class, 'viewJobDetails'])->name('job-details');
+
+    Route::post('/updateJob/{job}', [ClientController::class, 'updateJob'])->name('updateJob');
+
 });
+
+
+
+
+
+
+
+
+
+// Navigation Routes
+Route::get('/client', [ClientController::class, 'index'])->name('client_mode');
+
+
+Route::get('/employee', function () {
+    return view('employee');
+})->name('employee_mode');
 
 
 

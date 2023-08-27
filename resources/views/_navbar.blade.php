@@ -22,20 +22,20 @@
                 @endif
 
                 @endguest
+                @auth
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
+                        Work Modes
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="{{ route('client_mode') }}">Client Mode</a></li>
+                        <li><a class="dropdown-item" href="{{ route('employee_mode') }}">Employee Mode</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </li>
-                @auth
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('profile') }}">My Profile</a>
                 </li>
