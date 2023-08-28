@@ -135,10 +135,14 @@
         </div>
 
         <div class="form-group form-check my-3">
-            <strong>Existing Images for this post</strong>
             @if ($job->site_pictures)
+            <strong>Existing Images for this post</strong>
             @foreach ( json_decode( $job->site_pictures ) as $picture )
-            <div><small> {{$picture}} </small></div>
+            <li>
+                <a href="{{ asset('storage/' . $picture) }}" target="_blank">
+                    {{ $picture }}
+                </a>
+            </li>
             @endforeach
             @endif
             <input class="form-check-input" type="checkbox" id="delete_existing_images" name="delete_existing_images">
@@ -155,7 +159,9 @@
         </div>
 
         <!-- Submit Button -->
+        <div class="form-group my-2">
         <button type="submit" class="btn btn-primary">Update Job</button>
+        </div>
     </form>
 </div>
 

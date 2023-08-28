@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\EmployeeController;
 
 
 
@@ -68,10 +69,10 @@ Route::middleware(['auth'])->group(function () {
 // Navigation Routes
 Route::get('/client', [ClientController::class, 'index'])->name('client_mode');
 
+Route::get('employee', [EmployeeController::class, 'index'])->name('employee_mode');
 
-Route::get('/employee', function () {
-    return view('employee');
-})->name('employee_mode');
+Route::post('/employee/search', [EmployeeController::class, 'search'])->name('searchJob');
+
 
 
 

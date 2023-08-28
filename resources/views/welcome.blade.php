@@ -14,4 +14,6 @@
     <p>This is the welcome page content.</p>
 
 </div>
+
+<!-- /.container -->
 @endsection

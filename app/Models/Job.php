@@ -33,7 +33,7 @@ class Job extends Model
     ];
 
     // Define the relationship between Job and User (Client)
-    public function client()
+    public function user()
     {
         return $this->belongsTo(User::class, 'client_id');
     }
