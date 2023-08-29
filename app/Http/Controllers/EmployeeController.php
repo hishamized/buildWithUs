@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Job;
+use App\Models\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Profile;
@@ -18,8 +20,8 @@ class EmployeeController extends Controller
             $user = auth()->user();
             $jobs = Job::all();
             $profile = $user->profile;
-
-            return view('employee', compact('user', 'jobs', 'profile'));
+            $applications = Application::where('user_id', $user->id)->get();
+            return view('employee', compact('user', 'jobs', 'profile', 'applications'));
         }
     }
 
@@ -42,6 +44,7 @@ class EmployeeController extends Controller
                     $html .= '<div><strong>Client Name: </strong>' . $job->user->name . '</div>';
                     $html .= '<div><span>' . 'Views : ' . $job->views . "</span></div>";
                     $html .= '<div><span>' . 'Applications : ' . $job->application_count . "</span></div>";
+                    $html .= '<div><a href="' . route('jobFullView', ['id' => $job->id]) . '">' . 'View Full Job : ' . "</a></div>";
                     $html .= '</li>';
                     $html .= "<hr>";
                 }
@@ -51,5 +54,23 @@ class EmployeeController extends Controller
         }
 
         return response()->json(['html' => $html]);
+    }
+
+    public function jobFullView($id)
+    {
+
+        // Check if the user has already applied for this job
+        $userHasApplied = Application::where('user_id', Auth::id())
+            ->where('job_id', $id)
+            ->exists();
+        $job = Job::findOrFail($id);
+
+
+        if (!$job) {
+            abort(404); // Handle the case where the job with the given ID is not found.
+        }
+
+        // Pass the $job object to the view to display full job details.
+        return view('job-full-view', compact('job', 'userHasApplied'));
     }
 }

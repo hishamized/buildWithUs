@@ -160,7 +160,7 @@
 
         <!-- Submit Button -->
         <div class="form-group my-2">
-        <button type="submit" class="btn btn-primary">Update Job</button>
+            <button type="submit" class="btn btn-primary">Update Job</button>
         </div>
     </form>
 </div>
@@ -266,7 +266,19 @@
 
 
     </div>
-    {{-- Add any other job details you want to display here --}}
+    <form class="my-3" method="POST" action="{{ route('client.deleteJob', ['jobId' => $job->id]) }}">
+        @csrf
+        <button type="submit" class="btn btn-danger my-2">
+            Delete this job post
+        </button>
+
+        <!-- Password input field -->
+        <div class="form-group my-2">
+            <label for="clientPassword">Password:</label>
+            <input type="password" class="form-control" id="clientPassword" name="password" required>
+        </div>
+    </form>
+
 </div>
 
 @section('scripts')

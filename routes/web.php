@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
@@ -72,6 +73,14 @@ Route::get('/client', [ClientController::class, 'index'])->name('client_mode');
 Route::get('employee', [EmployeeController::class, 'index'])->name('employee_mode');
 
 Route::post('/employee/search', [EmployeeController::class, 'search'])->name('searchJob');
+
+Route::get('/employee/job-fll-view/{id}', [EmployeeController::class, 'jobFullView'])->name('jobFullView');
+
+Route::post('/applications/accept/{userId}/{jobId}', [ApplicationController::class, 'acceptApplication'])->name('applications.accept');
+
+Route::post('/applications/cancel', [ApplicationController::class, 'cancelApplication'])->name('applications.cancel');
+
+Route::post('/client/deleteJob/{jobId}', [ClientController::class, 'deleteJob'])->name('client.deleteJob');
 
 
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -165,4 +165,35 @@ class ClientController extends Controller
         // Redirect or return a response
         return redirect()->route('job-details', ['job' => $job->id])->with('success', 'Job updated successfully.');
     }
+
+
+public function deleteJob(Request $request, $jobId)
+{
+    $user = auth()->user();
+    $job = Job::find($jobId);
+    $validPassword = false;
+
+    // Check if the entered password matches the user's hashed password
+    if (!Hash::check($request->input('password'), $user->password)) {
+        return redirect()->back()->with('error', 'Invalid password. Job not deleted.');
+    }else{
+        $validPassword = true;
+    }
+    if ($validPassword === false) {
+        return redirect()->back()->with('error', 'Invalid password. Job not deleted.');
+    } else {
+       // Delete the job
+       if ($job->site_pictures) {
+        foreach (json_decode($job->site_pictures) as $imageFilename) {
+            Storage::delete('public/' . $imageFilename);
+        }
+    }
+    Job::destroy($jobId);
+
+    return redirect()->route('employee_mode')->with('success', 'Your job post was deleted successfully.');
+
+    }
+
+}
+
 }

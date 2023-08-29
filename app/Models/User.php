@@ -53,5 +53,11 @@ public function jobs()
     return $this->hasMany(Job::class, 'client_id');
 }
 
+public function applications()
+{
+    return $this->hasMany(Application::class, 'user_id');
+}
+
+
 
 }
