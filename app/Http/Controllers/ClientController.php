@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use App\Models\User;
+use App\Models\Application;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -99,12 +100,17 @@ class ClientController extends Controller
         }
     }
 
-
-    public function viewJobDetails(Job $job)
+    public function viewJobDetails($id)
     {
-        // You can pass the $job object to the view to display full job details.
-        return view('job-details', compact('job'));
+        // Fetch the job details based on the $id parameter
+        $job = Job::find($id);
+
+        // Fetch job applications related to the job
+        $jobApplications = Application::where('job_id', $id)->get();
+
+        return view('job-details', compact('job', 'jobApplications'));
     }
+
 
 
     public function updateJob(Request $request, Job $job)

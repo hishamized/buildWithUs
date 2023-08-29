@@ -165,6 +165,35 @@
     </form>
 </div>
 
+<div class="container">
+    <!-- Button to show applications -->
+    <button id="showApplicationsBtn" class="btn btn-primary">Show Applications</button>
+    <!-- Container to display applications (hidden by default) -->
+    <div id="applicationsContainer" style="display: none;">
+        <h2>Job Applications</h2>
+
+        @if ($jobApplications->isEmpty())
+        <p>No applications have been submitted for this job.</p>
+        @else
+        <div class="row">
+            @foreach ($jobApplications as $application)
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Application by: {{ $application->user->name }}</h5>
+                        <p class="card-text">Application Date: {{ $application->created_at->format('F d, Y') }}</p>
+                        <!-- Add more application details here -->
+                        <a target="_blank" href="{{ route('generalProfile', ['id' => $application->user->id]) }}" class="btn btn-primary">View Applicant's Profile</a>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @endif
+    </div>
+</div>
+
+
 <div class="container my-5">
     <h1>Job Details</h1>
 
@@ -279,6 +308,8 @@
         </div>
     </form>
 
+
+
 </div>
 
 @section('scripts')
@@ -314,6 +345,20 @@
             editJobForm.style.display = 'block';
         } else {
             editJobForm.style.display = 'none';
+        }
+    });
+
+    // Get references to the button and applications container
+    const showApplicationsBtn = document.getElementById('showApplicationsBtn');
+    const applicationsContainer = document.getElementById('applicationsContainer');
+
+    // Add a click event listener to the button
+    showApplicationsBtn.addEventListener('click', () => {
+        // Toggle the visibility of the applications container
+        if (applicationsContainer.style.display === 'none') {
+            applicationsContainer.style.display = 'block';
+        } else {
+            applicationsContainer.style.display = 'none';
         }
     });
 </script>

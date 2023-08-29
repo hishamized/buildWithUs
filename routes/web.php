@@ -53,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/change-password', [AuthController::class, 'changePassword'])->name('change-password');
     Route::post('/post-job', [ClientController::class, 'postJob'])->name('postJob');
 
-    Route::get('/job-details/{job}', [ClientController::class, 'viewJobDetails'])->name('job-details');
+    Route::get('/job-details/{id}', [ClientController::class, 'viewJobDetails'])->name('job-details');
 
     Route::post('/updateJob/{job}', [ClientController::class, 'updateJob'])->name('updateJob');
 
@@ -81,6 +81,8 @@ Route::post('/applications/accept/{userId}/{jobId}', [ApplicationController::cla
 Route::post('/applications/cancel', [ApplicationController::class, 'cancelApplication'])->name('applications.cancel');
 
 Route::post('/client/deleteJob/{jobId}', [ClientController::class, 'deleteJob'])->name('client.deleteJob');
+
+Route::get('/generalProfile/{id}', [ProfileController::class, 'generalProfile'])->name('generalProfile');
 
 
 

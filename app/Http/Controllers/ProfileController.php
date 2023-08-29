@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -99,6 +100,17 @@ public function update(Request $request)
         return redirect()->route('profile')->with('success', 'Profile created and updated successfully.');
     }
 }
+
+public function generalProfile($id)
+    {
+        // Retrieve the user whose profile is being viewed
+        $user = User::findOrFail($id);
+
+        // Load the user's profile (assuming a one-to-one relationship exists)
+        $profile = $user->profile;
+
+        return view('generalProfile', compact('user', 'profile'));
+    }
 
 
 

@@ -161,7 +161,7 @@
                             <div> <Strong>Job Title: </Strong>{{ $job->job_title }}</div>
                             <div> <strong> Posted On: </strong>{{ $job->created_at->format('Y-m-d') }}</div>
                             <div><span> {{$job->views}} Views</span> <span> {{$job->application_count}} Applications </span> </div>
-                            <a href="{{ route('job-details', ['job' => $job->id]) }}" class="btn btn-primary btn-sm float-right">View Full Details</a>
+                            <a href="{{ route('job-details', ['id' => $job->id]) }}" class="btn btn-primary btn-sm float-right">View Full Details</a>
                         </li>
                         @endforeach
                     </ul>

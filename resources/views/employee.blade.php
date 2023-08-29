@@ -61,16 +61,23 @@
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="container-fluid" id="content1" style="display: none;">
                     <p>These are some of the Jobs which rquire the skills that you have got based on your profile.</p>
+
                     @foreach ($jobs as $job)
                     @php
                     // Decode the JSON string to an array for both user skills and job requirements.
+                    if ($user->profile && !empty($user->profile->skill_set)) {
                     $userSkills = json_decode($user->profile->skill_set);
+
+                    // Now you can use $userSkills safely
+                    } else {
+                    // Handle the case where the profile or skill_set is missing
+                    $userSkills = ['none'];
+                    }
                     $jobRequirements = json_decode($job->skill_set);
 
                     // Use array_intersect to find matching skills.
                     $matchingSkills = array_intersect($userSkills, $jobRequirements);
                     @endphp
-
                     @if (!empty($matchingSkills))
                     <!-- Display the job information because there are matching skills -->
                     <div class="job">
@@ -83,7 +90,7 @@
                         <hr>
                     </div>
                     @else
-                    <h6>Empty</h6>
+                    <h6>No relevant jobs for you.</h6>
                     @endif
                     @endforeach
 
@@ -119,7 +126,7 @@
                         <p>You haven't submitted any applications yet.</p>
                         @else
                         <ul>
-                        <h3>Your Applications</h3>
+                            <h3>Your Applications</h3>
                             @foreach ($applications as $application)
                             <li class="list-group-item">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -146,6 +153,7 @@
             </main>
         </div>
     </div>
+    <!-- Give ne a  -->
 
 </div>
 
