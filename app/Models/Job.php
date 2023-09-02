@@ -43,6 +43,12 @@ class Job extends Model
     return $this->hasMany(Application::class, 'job_id');
 }
 
+public function assignments()
+{
+    return $this->hasMany(Assignment::class, 'job_id');
+}
+
+
 
 
 }

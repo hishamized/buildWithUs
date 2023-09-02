@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use App\Models\Application;
+use App\Models\Assignment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
@@ -21,7 +22,8 @@ class EmployeeController extends Controller
             $jobs = Job::all();
             $profile = $user->profile;
             $applications = Application::where('user_id', $user->id)->get();
-            return view('employee', compact('user', 'jobs', 'profile', 'applications'));
+            $assignments = Assignment::where('employee_id', auth()->user()->id)->get();
+            return view('employee', compact('user', 'jobs', 'profile', 'applications', 'assignments'));
         }
     }
 

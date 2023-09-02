@@ -59,5 +59,16 @@ public function applications()
 }
 
 
+public function employeeAssignments()
+    {
+        return $this->hasMany(Assignment::class, 'employee_id');
+    }
+
+    public function clientAssignments()
+    {
+        return $this->hasMany(Assignment::class, 'client_id');
+    }
+
+
 
 }

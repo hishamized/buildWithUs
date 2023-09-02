@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\AssignmentController;
 
 
 
@@ -83,6 +84,9 @@ Route::post('/applications/cancel', [ApplicationController::class, 'cancelApplic
 Route::post('/client/deleteJob/{jobId}', [ClientController::class, 'deleteJob'])->name('client.deleteJob');
 
 Route::get('/generalProfile/{id}', [ProfileController::class, 'generalProfile'])->name('generalProfile');
+
+Route::post('/assignments/create/{applicationId}', [AssignmentController::class, 'createAssignment'])->name('assignments.create');
+
 
 
 

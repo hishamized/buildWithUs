@@ -29,5 +29,12 @@ class Application extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function isNotHired()
+{
+    // Check if the application is not hired (based on your business logic)
+    return $this->status !== 'Accepted'; // Assuming 'hired' is the status when an application is hired
+}
+
 }
 

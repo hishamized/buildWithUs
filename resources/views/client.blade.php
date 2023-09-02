@@ -35,7 +35,7 @@
             <div class="list-group">
                 <button class="list-group-item list-group-item-action" id="post-job-button">Post a Job Offer</button>
                 <button class="list-group-item list-group-item-action" id="my-job-offers-button">My Job Offers</button>
-                <button class="list-group-item list-group-item-action" id="open-chats-button">Open Chats</button>
+                <button class="list-group-item list-group-item-action" id="open-assignments-button">My Assignments</button>
                 <!-- Add more sidebar options as needed -->
             </div>
         </div>
@@ -167,8 +167,33 @@
                     </ul>
                 </div>
             </div>
-            <div id="open-chats-content" style="display: none;">
-                C
+            <div id="open-assignments-content" style="display: none;">
+                <div class="container">
+                    <h2>Your Assignments  </h2>
+                    <small>Jobs assigned by you to others.</small>
+
+                    @if ($assignments->isEmpty())
+                    <p>You haven't assigned any jobs yet.</p>
+                    @else
+                    <ul class="list-group">
+                        @foreach ($assignments as $assignment)
+                        <li class="list-group-item">
+                            <h5 class="mb-3">Job Title: {{ $assignment->job->job_title }}</h5>
+                            <p class="mb-1">Hired User: {{ $assignment->employee->name }}</p>
+                            <p class="mb-1">Assignment Date: {{ $assignment->created_at->format('F d, Y') }}</p>
+
+                            <!-- Button to view the profile of the hired user -->
+                            <a href="{{ route('generalProfile', ['id' => $assignment->employee->id]) }}" class="btn btn-primary btn-sm mr-2">View User Profile</a>
+
+                            <!-- Button to view the job details -->
+                            <a href="{{ route('jobFullView', ['id' => $assignment->job->id]) }}" class="btn btn-success btn-sm">View Job Details</a>
+                        </li>
+                        @endforeach
+                    </ul>
+                    @endif
+                </div>
+
+
             </div>
             <!-- Add more content sections for other features as needed -->
         </div>
@@ -181,11 +206,11 @@
         // Get references to the sidebar buttons and content sections
         const postJobButton = document.getElementById('post-job-button');
         const myJobOffersButton = document.getElementById('my-job-offers-button');
-        const openChatsButton = document.getElementById('open-chats-button');
+        const openAssignmentsButton = document.getElementById('open-assignments-button');
 
         const postJobContent = document.getElementById('post-job-content');
         const myJobOffersContent = document.getElementById('my-job-offers-content');
-        const openChatsContent = document.getElementById('open-chats-content');
+        const openAssignmentsContent = document.getElementById('open-assignments-content');
 
         // Add click event listeners to the sidebar buttons
         postJobButton.addEventListener('click', function() {
@@ -198,16 +223,16 @@
             myJobOffersContent.style.display = 'block';
         });
 
-        openChatsButton.addEventListener('click', function() {
+        openAssignmentsButton.addEventListener('click', function() {
             hideAllContentSections();
-            openChatsContent.style.display = 'block';
+            openAssignmentsContent.style.display = 'block';
         });
 
         // Function to hide all content sections
         function hideAllContentSections() {
             postJobContent.style.display = 'none';
             myJobOffersContent.style.display = 'none';
-            openChatsContent.style.display = 'none';
+            openAssignmentsContent.style.display = 'none';
             // Add more lines for other content sections as needed
         }
 

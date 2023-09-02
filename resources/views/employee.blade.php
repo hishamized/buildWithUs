@@ -50,7 +50,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" id="button4">
-                                Option 4
+                                My Jobs
                             </a>
                         </li>
                     </ul>
@@ -133,7 +133,8 @@
                                     <div>
                                         <h5 class="mb-0"><strong>Job Title:</strong> {{ $application->job->job_title }}</h5>
                                         <p class="mb-1"><strong>Posted By:</strong> {{ $application->job->user->name }}</p>
-                                        <p class="mb-0"><strong>Posted On:</strong> {{ $application->job->created_at->format('F d, Y') }}</p>
+                                        <p class="mb-1"><strong>Application Status:</strong> {{ $application->status }}</p>
+                                        <p class="mb-0"><strong>Job Posted On:</strong> {{ $application->job->created_at->format('F d, Y') }}</p>
                                     </div>
                                     <div>
                                         <a href="{{ route('jobFullView', ['id' => $application->job->id]) }}" class="btn btn-primary">View Job</a>
@@ -148,7 +149,30 @@
 
                 </div>
                 <div class="container-fluid" id="content4" style="display: none;">
-                    Content4
+                <div class="container">
+    <h2>Your Job Assignments</h2>
+    <small>These are the jobs assigned to you by other clients.</small>
+
+    @if ($assignments->isEmpty())
+        <p>No assignments have been made to you.</p>
+    @else
+        <ul class="list-group">
+            @foreach ($assignments as $assignment)
+                <li class="list-group-item">
+                    <h5>Job Title: {{ $assignment->job->job_title }}</h5>
+                    <p>Client: {{ $assignment->client->name }}</p>
+                    <p>Assignment Date: {{ $assignment->created_at->format('F d, Y') }}</p>
+
+                    <!-- Button to view the job details -->
+                    <a href="{{ route('jobFullView', ['id' => $assignment->job->id]) }}" class="btn btn-success">View Job Details</a>
+
+                    <!-- Button to view the client's profile -->
+                    <a href="{{ route('generalProfile', ['id' => $assignment->client->id]) }}" class="btn btn-primary">View Client Profile</a>
+                </li>
+            @endforeach
+        </ul>
+    @endif
+</div>
                 </div>
             </main>
         </div>

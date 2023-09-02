@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use App\Models\User;
+use App\Models\Assignment;
 use App\Models\Application;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -18,8 +19,9 @@ class ClientController extends Controller
         if (auth()->check()) {
             $user = auth()->user();
             $jobs = $user->jobs;
+            $assignments = Assignment::where('client_id', auth()->user()->id)->get();
 
-            return view('client', compact('jobs'));
+            return view('client', compact('jobs', 'assignments'));
         }
 
         return redirect()->route('login');

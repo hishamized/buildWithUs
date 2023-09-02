@@ -184,6 +184,14 @@
                         <p class="card-text">Application Date: {{ $application->created_at->format('F d, Y') }}</p>
                         <!-- Add more application details here -->
                         <a target="_blank" href="{{ route('generalProfile', ['id' => $application->user->id]) }}" class="btn btn-primary">View Applicant's Profile</a>
+                        @if ($application->isNotHired())
+                        <form class="my-2" method="POST" action="{{ route('assignments.create', ['applicationId' => $application->id]) }}">
+                            @csrf <!-- CSRF token -->
+                            <button type="submit" class="btn btn-success">Hire Now!</button>
+                        </form>
+                        @else
+                        <p class="text-success">This user has been hired for this job already.</p>
+                        @endif
                     </div>
                 </div>
             </div>
