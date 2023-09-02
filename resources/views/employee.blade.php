@@ -60,7 +60,7 @@
             <!-- Content Display -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="container-fluid" id="content1" style="display: none;">
-                    <p>These are some of the Jobs which rquire the skills that you have got based on your profile.</p>
+                    <p>These are some of the Jobs which rquire the skills that you have got based on your profile and the site location matches the address mentioned in your profile.</p>
 
                     @foreach ($jobs as $job)
                     @php
@@ -74,11 +74,18 @@
                     $userSkills = ['none'];
                     }
                     $jobRequirements = json_decode($job->skill_set);
+                    $jobLocation = json_decode($job->site_address);
 
                     // Use array_intersect to find matching skills.
                     $matchingSkills = array_intersect($userSkills, $jobRequirements);
+
+                    $locationMatches = (
+                    $user->profile->country == $jobLocation->country &&
+                    $user->profile->state == $jobLocation->state &&
+                    $user->profile->city == $jobLocation->city
+                    );
                     @endphp
-                    @if (!empty($matchingSkills))
+                    @if (!empty($matchingSkills) && $locationMatches)
                     <!-- Display the job information because there are matching skills -->
                     <div class="job">
                         <li class="list-group-item">
@@ -149,30 +156,30 @@
 
                 </div>
                 <div class="container-fluid" id="content4" style="display: none;">
-                <div class="container">
-    <h2>Your Job Assignments</h2>
-    <small>These are the jobs assigned to you by other clients.</small>
+                    <div class="container">
+                        <h2>Your Job Assignments</h2>
+                        <small>These are the jobs assigned to you by other clients.</small>
 
-    @if ($assignments->isEmpty())
-        <p>No assignments have been made to you.</p>
-    @else
-        <ul class="list-group">
-            @foreach ($assignments as $assignment)
-                <li class="list-group-item">
-                    <h5>Job Title: {{ $assignment->job->job_title }}</h5>
-                    <p>Client: {{ $assignment->client->name }}</p>
-                    <p>Assignment Date: {{ $assignment->created_at->format('F d, Y') }}</p>
+                        @if ($assignments->isEmpty())
+                        <p>No assignments have been made to you.</p>
+                        @else
+                        <ul class="list-group">
+                            @foreach ($assignments as $assignment)
+                            <li class="list-group-item">
+                                <h5>Job Title: {{ $assignment->job->job_title }}</h5>
+                                <p>Client: {{ $assignment->client->name }}</p>
+                                <p>Assignment Date: {{ $assignment->created_at->format('F d, Y') }}</p>
 
-                    <!-- Button to view the job details -->
-                    <a href="{{ route('jobFullView', ['id' => $assignment->job->id]) }}" class="btn btn-success">View Job Details</a>
+                                <!-- Button to view the job details -->
+                                <a href="{{ route('jobFullView', ['id' => $assignment->job->id]) }}" class="btn btn-success">View Job Details</a>
 
-                    <!-- Button to view the client's profile -->
-                    <a href="{{ route('generalProfile', ['id' => $assignment->client->id]) }}" class="btn btn-primary">View Client Profile</a>
-                </li>
-            @endforeach
-        </ul>
-    @endif
-</div>
+                                <!-- Button to view the client's profile -->
+                                <a href="{{ route('generalProfile', ['id' => $assignment->client->id]) }}" class="btn btn-primary">View Client Profile</a>
+                            </li>
+                            @endforeach
+                        </ul>
+                        @endif
+                    </div>
                 </div>
             </main>
         </div>
