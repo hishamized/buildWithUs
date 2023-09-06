@@ -43,7 +43,7 @@
         <!-- Content Area -->
         <div class="col-md-9">
             <div id="post-job-content" style="display: none;">
-                <form action="{{ route('postJob') }}" method="POST" method="POST" enctype="multipart/form-data">
+                <form id="new-job-form" action="{{ route('postJob') }}" method="POST" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group my-3">
                         <label for="job_title">Job Title</label>
@@ -147,7 +147,7 @@
                     </div>
 
 
-                    <button type="submit" class="btn btn-primary">Post Job</button>
+                    <button type="submit" value="submit" class="btn btn-primary">Post Job</button>
                 </form>
 
             </div>
@@ -181,12 +181,19 @@
                             <h5 class="mb-3">Job Title: {{ $assignment->job->job_title }}</h5>
                             <p class="mb-1">Hired User: {{ $assignment->employee->name }}</p>
                             <p class="mb-1">Assignment Date: {{ $assignment->created_at->format('F d, Y') }}</p>
+                            <p class="mb-1">Assignment Status: {{ $assignment->assignment_status }}</p>
 
                             <!-- Button to view the profile of the hired user -->
                             <a href="{{ route('generalProfile', ['id' => $assignment->employee->id]) }}" class="btn btn-primary btn-sm mr-2">View User Profile</a>
 
                             <!-- Button to view the job details -->
                             <a href="{{ route('jobFullView', ['id' => $assignment->job->id]) }}" class="btn btn-success btn-sm">View Job Details</a>
+
+                            @if( $assignment->assignment_status != "cancelled" )
+                            <a href="{{ route('cencelAssignment', ['assignmentId' => $assignment->id]) }}"  class="btn btn-warning btn-sm">Cancel Assignment</a>
+                             @endif
+
+                            <a href="{{ route('deleteAssignment', ['assignmentId' => $assignment->id]) }}"  class="btn btn-danger btn-sm">Delete Assignment</a>
                         </li>
                         @endforeach
                     </ul>
@@ -250,6 +257,18 @@
 
 
     });
+
+    document.getElementById('new-job-form').addEventListener('submit', function (e) {
+            var skillSetInput = document.getElementById('skill_set').value;
+            var isValid = /^[\w\s]+(,\s[\w\s]+)*$/.test(skillSetInput); // Check for words separated by commas and spaces
+            if (!isValid) {
+                console.log("Not Valid text");
+                e.preventDefault(); // Prevent form submission
+                alert('Please enter a valid skill set, separated by commas and spaces.');
+            } else {
+                console.log("Valid text");
+            }
+        });
 </script>
 @endsection
 

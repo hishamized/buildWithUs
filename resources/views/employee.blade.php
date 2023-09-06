@@ -79,11 +79,16 @@
                     // Use array_intersect to find matching skills.
                     $matchingSkills = array_intersect($userSkills, $jobRequirements);
 
-                    $locationMatches = (
+                    if($user->profile){
+                        $locationMatches = (
                     $user->profile->country == $jobLocation->country &&
                     $user->profile->state == $jobLocation->state &&
                     $user->profile->city == $jobLocation->city
                     );
+                    }else {
+                        $locationMatches = false;
+                    }
+
                     @endphp
                     @if (!empty($matchingSkills) && $locationMatches)
                     <!-- Display the job information because there are matching skills -->

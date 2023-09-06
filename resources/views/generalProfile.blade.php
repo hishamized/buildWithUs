@@ -44,10 +44,9 @@
                         <li><strong>Pin Code:</strong> {{ $user->profile->pin_code }}</li>
                         <li><strong>Contact No:</strong> {{ $user->profile->contact_no }}</li>
                         <li><strong>Alternate Contact No:</strong> {{ $user->profile->alternate_contact_no }}</li>
-                        <li><a
-                        href="https://api.whatsapp.com/send?phone={{ $user->profile->contact_no }}" target="_blank" class="btn btn-success">
-                        <i class="fa-brands fa-whatsapp" style="color: #ffffff;"></i>
-                               <small> Chat on WhatsApp</small>
+                        <li><a href="https://api.whatsapp.com/send?phone={{ $user->profile->contact_no }}" target="_blank" class="btn btn-success">
+                                <i class="fa-brands fa-whatsapp" style="color: #ffffff;"></i>
+                                <small> Chat on WhatsApp</small>
                             </a>
                         </li>
                     </ul>
@@ -73,6 +72,19 @@
                             </ul>
                         </li>
                         <li><strong>Resume:</strong> <a class="btn btn-success" href="{{ asset('storage/' . $user->profile->resume) }}" target="_blank"><i class="fa-solid fa-file" style="color: #ffffff;"></i> Download Resume</a></li>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong>UPI ID:</strong>
+                                    <ul class="list-unstyled">
+                                        <li>{{$user->profile->upi_id}}</li>
+                                        <li>{!! QrCode::size(200)->generate($user->profile->upi_id) !!}</li>
+                                    </ul>
+                                    <small class="text-muted">Scan the QR Code to obtain UPI ID and then pay using any payment app</small>
+                                </div>
+                            </div>
+                        </div>
+
                     </ul>
                 </div>
             </div>

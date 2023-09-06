@@ -24,6 +24,7 @@ class Profile extends Model
         'alternate_contact_no',
         'date_of_birth',
         'adhaar_card',
+        'upi_id',
         'skill_set',
         'resume',
     ];

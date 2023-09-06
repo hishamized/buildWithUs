@@ -87,8 +87,12 @@ Route::get('/generalProfile/{id}', [ProfileController::class, 'generalProfile'])
 
 Route::post('/assignments/create/{applicationId}', [AssignmentController::class, 'createAssignment'])->name('assignments.create');
 
+Route::get('/showFindPeople', [ProfileController::class, 'showFindPeople'])->name('showFindPeople');
 
+Route::post('/findPeople', [ProfileController::class, 'findPeople'])->name('findPeople');
 
+Route::get('/cencelAssignment/{assignmentId}', [AssignmentController::class, 'cencelAssignment'])->name('cencelAssignment');
 
+Route::get('/deleteAssignment/{assignmentId}', [AssignmentController::class, 'deleteAssignment'])->name('deleteAssignment');
 
 

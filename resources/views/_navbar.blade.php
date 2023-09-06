@@ -33,11 +33,13 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('profile') }}">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('showFindPeople') }}">Find People</a>
                 </li>
                 @endauth
             </ul>

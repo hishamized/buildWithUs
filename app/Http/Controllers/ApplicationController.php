@@ -10,6 +10,7 @@ use App\Models\Job;
 
 class ApplicationController extends Controller
 {
+
     // View all applications for a job
     public function viewApplications($jobId)
     {
@@ -18,6 +19,13 @@ class ApplicationController extends Controller
 
     public function acceptApplication($userId, $jobId)
 {
+
+    $job = Job::find($jobId);
+    $client = User::find($job->client_id);
+
+    if($client->id == auth()->user()->id){
+        return redirect()->back()->with('error', 'You cannot apply for your own job');
+    }
     // Check if the user has already applied for this job
     $existingApplication = Application::where('user_id', $userId)
         ->where('job_id', $jobId)
