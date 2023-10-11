@@ -64,6 +64,7 @@
 
                     @foreach ($jobs as $job)
                     @php
+                    $foundJobs = true;
                     // Decode the JSON string to an array for both user skills and job requirements.
                     if ($user->profile && !empty($user->profile->skill_set)) {
                     $userSkills = json_decode($user->profile->skill_set);
@@ -89,6 +90,8 @@
                         $locationMatches = false;
                     }
 
+
+
                     @endphp
                     @if (!empty($matchingSkills) && $locationMatches)
                     <!-- Display the job information because there are matching skills -->
@@ -102,9 +105,14 @@
                         <hr>
                     </div>
                     @else
-                    <h6>No relevant jobs for you.</h6>
+                    @php
+                    $foundJobs = false;
+                    @endphp
                     @endif
                     @endforeach
+                    @if( $foundJobs == false)
+                    <p>Sorry, there are no jobs available for you at the moment.</p>
+                    @endif
 
                 </div>
                 <div class="container-fluid" id="content2" style="display: none;">

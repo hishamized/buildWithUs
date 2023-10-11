@@ -27,12 +27,12 @@ class Job extends Model
     ];
 
     protected $casts = [
-        'site_pictures' => 'json', // Define site_pictures as a JSON casted attribute
-        'site_address' => 'json',  // Define site_address as a JSON casted attribute
-        'skill_set' => 'json',     // Define skill_set as a JSON casted attribute
+        'site_pictures' => 'json',
+        'site_address' => 'json',
+        'skill_set' => 'json',
     ];
 
-    // Define the relationship between Job and User (Client)
+
     public function user()
     {
         return $this->belongsTo(User::class, 'client_id');

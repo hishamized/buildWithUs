@@ -61,7 +61,7 @@ class EmployeeController extends Controller
     public function jobFullView($id)
     {
 
-        // Check if the user has already applied for this job
+
         $userHasApplied = Application::where('user_id', Auth::id())
             ->where('job_id', $id)
             ->exists();
@@ -69,10 +69,12 @@ class EmployeeController extends Controller
 
 
         if (!$job) {
-            abort(404); // Handle the case where the job with the given ID is not found.
+            abort(404);
         }
 
-        // Pass the $job object to the view to display full job details.
+        $job->increment('views');
+
+
         return view('job-full-view', compact('job', 'userHasApplied'));
     }
 }
