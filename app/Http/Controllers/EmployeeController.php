@@ -31,25 +31,29 @@ class EmployeeController extends Controller
     {
         $searchText = trim($request->searchText);
 
-        $matchingJobs = Job::with('user')->get();
+        $matchingJobs = Job::with('user')
+            ->where(function ($query) use ($searchText) {
+                $query->where('job_title', 'LIKE', "%$searchText%")
+                    ->orWhere('job_description', 'LIKE', "%$searchText%")
+                    ->orWhere('job_type', 'LIKE', "%$searchText%")
+                    ->orWhere('job_requirements', 'LIKE', "%$searchText%")
+                    ->orWhereJsonContains('skill_set', $searchText);
+            })
+            ->get();
 
         $html = '';
 
         if (!empty($matchingJobs)) {
             foreach ($matchingJobs as $job) {
-                $jobSkills = json_decode($job->skill_set);
-
-                if (in_array($searchText, $jobSkills)) {
-                    $html .= '<li class="list-group-item">';
-                    $html .= '<div><strong>' . "Job Title : </strong>" . $job->job_title . '</div>';
-                    $html .= '<div><strong>' . "Posted On : </strong>" . $job->created_at->format('Y-m-d') . '</div>';
-                    $html .= '<div><strong>Client Name: </strong>' . $job->user->name . '</div>';
-                    $html .= '<div><span>' . 'Views : ' . $job->views . "</span></div>";
-                    $html .= '<div><span>' . 'Applications : ' . $job->application_count . "</span></div>";
-                    $html .= '<div><a href="' . route('jobFullView', ['id' => $job->id]) . '">' . 'View Full Job : ' . "</a></div>";
-                    $html .= '</li>';
-                    $html .= "<hr>";
-                }
+                $html .= '<li class="list-group-item">';
+                $html .= '<div><strong>' . "Job Title : </strong>" . $job->job_title . '</div>';
+                $html .= '<div><strong>' . "Posted On : </strong>" . $job->created_at->format('Y-m-d') . '</div>';
+                $html .= '<div><strong>Client Name: </strong>' . $job->user->name . '</div>';
+                $html .= '<div><span>' . 'Views : ' . $job->views . "</span></div>";
+                $html .= '<div><span>' . 'Applications : ' . $job->application_count . "</span></div>";
+                $html .= '<div><a href="' . route('jobFullView', ['id' => $job->id]) . '">' . 'View Full Job : ' . "</a></div>";
+                $html .= '</li>';
+                $html .= "<hr>";
             }
         } else {
             $html = 'No records found';

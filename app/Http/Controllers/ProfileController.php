@@ -126,21 +126,22 @@ class ProfileController extends Controller
         $search = $validatedData['search'];
 
         $results = User::where('name', 'LIKE', "%{$search}%")
-            ->orWhere('username', 'LIKE', "%{$search}%")
-            ->orWhere('email', 'LIKE', "%{$search}%")
-            ->orWhereHas('profile', function ($query) use ($search) {
-                $query->where('street_address', 'LIKE', "%{$search}%")
-                    ->orWhere('country', 'LIKE', "%{$search}%")
-                    ->orWhere('state', 'LIKE', "%{$search}%")
-                    ->orWhere('city', 'LIKE', "%{$search}%")
-                    ->orWhere('pin_code', 'LIKE', "%{$search}%")
-                    ->orWhere('contact_no', 'LIKE', "%{$search}%")
-                    ->orWhere('alternate_contact_no', 'LIKE', "%{$search}%")
-                    ->orWhere('date_of_birth', 'LIKE', "%{$search}%")
-                    ->orWhere('adhaar_card', 'LIKE', "%{$search}%")
-                    ->orWhereRaw("JSON_CONTAINS(skill_set, ?)", ["\"$search\""]);
-            })
-            ->get();
+        ->orWhere('username', 'LIKE', "%{$search}%")
+        ->orWhere('email', 'LIKE', "%{$search}%")
+        ->orWhereHas('profile', function ($query) use ($search) {
+            $query->where('street_address', 'LIKE', "%{$search}%")
+                ->orWhere('country', 'LIKE', "%{$search}%")
+                ->orWhere('state', 'LIKE', "%{$search}%")
+                ->orWhere('city', 'LIKE', "%{$search}%")
+                ->orWhere('pin_code', 'LIKE', "%{$search}%")
+                ->orWhere('contact_no', 'LIKE', "%{$search}%")
+                ->orWhere('alternate_contact_no', 'LIKE', "%{$search}%")
+                ->orWhere('date_of_birth', 'LIKE', "%{$search}%")
+                ->orWhere('adhaar_card', 'LIKE', "%{$search}%")
+                ->orWhereRaw("JSON_SEARCH(skill_set, 'one', ?) IS NOT NULL", ["%$search%"]);
+        })
+        ->get();
+
 
         return view('findPeople', compact('results'));
     }

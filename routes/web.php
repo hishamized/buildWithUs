@@ -61,13 +61,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-
-
-
-
-
-
-
 // Navigation Routes
 Route::get('/client', [ClientController::class, 'index'])->name('client_mode');
 
@@ -94,5 +87,9 @@ Route::post('/findPeople', [ProfileController::class, 'findPeople'])->name('find
 Route::get('/cencelAssignment/{assignmentId}', [AssignmentController::class, 'cencelAssignment'])->name('cencelAssignment');
 
 Route::get('/deleteAssignment/{assignmentId}', [AssignmentController::class, 'deleteAssignment'])->name('deleteAssignment');
+
+Route::get('/showFindJobs', [ApplicationController::class, 'showFindJobs'])->name('showFindJobs');
+
+Route::post('/searchJobs', [ApplicationController::class, 'searchJobs'])->name('searchJobs');
 
 

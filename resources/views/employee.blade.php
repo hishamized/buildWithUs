@@ -129,7 +129,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" id="job-search-input" placeholder="Enter your job skills as keywords">
+                                    <input type="text" class="form-control" id="job-search-input" placeholder="Enter your job keywords or skills">
                                     <button class="btn btn-primary" id="job-search-button">Search</button>
                                 </div>
                             </div>

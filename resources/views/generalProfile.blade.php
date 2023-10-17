@@ -60,7 +60,8 @@
                     <h5 class="card-title">Additional Information</h5>
                     <ul class="list-unstyled">
                         <li><strong>Date of Birth:</strong> {{ $user->profile->date_of_birth }}</li>
-                        <li><strong>Aadhar Card:</strong> {{ $user->profile->adhaar_card }}</li>
+                        <li><strong>Aadhar Card:</strong> {{ $user->profile->adhaar_card ? 'XXXX-XXXX-' . substr($user->profile->adhaar_card, -4) : 'N/A' }}</li>
+
                         <li><strong>Skill Set:</strong></li>
                         <li>
                             <ul>
