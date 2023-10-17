@@ -12,10 +12,25 @@
 </div>
 @endif
 
+@if (session('status'))
+<div class="alert alert-success">
+    {{ session('status') }}
+</div>
+@endif
 
-@if(session('success'))
+@if (session('success'))
 <div class="alert alert-success">
     {{ session('success') }}
+</div>
+@endif
+
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
 </div>
 @endif
 
@@ -142,7 +157,7 @@
         </div>
 
         <div class="form-group">
-            <label for="adhaar_card">UPI ID:</label>
+            <label for="adhaar_card">UPI ID (Type NIL IF YOU DONT HAVE ONE) </label>
             <input type="text" class="form-control" id="upi_id" name="upi_id" value="{{ $user->profile ? $user->profile->upi_id : '' }}">
         </div>
 

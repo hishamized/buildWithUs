@@ -29,7 +29,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('client_mode') }}">Client Mode</a></li>
-                        <li><a class="dropdown-item" href="{{ route('employee_mode') }}">Employee Mode</a></li>
+                        <li><a class="dropdown-item" href="{{ route('employee_mode') }}">Worker Mode</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
