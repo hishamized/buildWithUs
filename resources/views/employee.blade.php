@@ -25,7 +25,7 @@
 @endif
 
 <div class="container my-4">
-    <h1>Welcome to Employee Mode</h1>
+    <h1>Welcome to Worker Mode</h1>
 
     <div class="container-fluid">
         <div class="row">
@@ -61,10 +61,16 @@
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="container-fluid" id="content1" style="display: none;">
                     <p>These are some of the Jobs which rquire the skills that you have got based on your profile and the site location matches the address mentioned in your profile.</p>
+                    @php
+                    $foundJobs = false; // Initialize it before the loop
+                    @endphp
 
+                    @if ($jobs->isNotEmpty())
                     @foreach ($jobs as $job)
                     @php
-                    $foundJobs = true;
+                    $userSkills = [];
+                    $locationMatches = false;
+
                     // Decode the JSON string to an array for both user skills and job requirements.
                     if ($user->profile && !empty($user->profile->skill_set)) {
                     $userSkills = json_decode($user->profile->skill_set);
@@ -80,39 +86,42 @@
                     // Use array_intersect to find matching skills.
                     $matchingSkills = array_intersect($userSkills, $jobRequirements);
 
-                    if($user->profile){
-                        $locationMatches = (
+                    if ($user->profile) {
+                    $locationMatches = (
                     $user->profile->country == $jobLocation->country &&
                     $user->profile->state == $jobLocation->state &&
                     $user->profile->city == $jobLocation->city
                     );
-                    }else {
-                        $locationMatches = false;
                     }
 
-
-
+                    if (!empty($matchingSkills) && $locationMatches) {
+                    $foundJobs = true;
+                    }
                     @endphp
+
                     @if (!empty($matchingSkills) && $locationMatches)
-                    <!-- Display the job information because there are matching skills -->
                     <div class="job">
                         <li class="list-group-item">
-                            <div> <Strong>Job Title: </Strong>{{ $job->job_title }}</div>
-                            <div> <strong> Posted On: </strong>{{ $job->created_at->format('Y-m-d') }}</div>
-                            <div><span> {{$job->views}} Views</span> <span> {{$job->application_count}} Applications </span> </div>
+                            <div><strong>Job Title: </strong>{{ $job->job_title }}</div>
+                            <div><strong>Posted On: </strong>{{ $job->created_at->format('Y-m-d') }}</div>
+                            <div>
+                                <span>{{$job->views}} Views</span>
+                                <span>{{$job->application_count}} Applications</span>
+                            </div>
                             <a href="{{ route('jobFullView', ['id' => $job->id]) }}" class="btn btn-primary btn-sm float-right">View Full Job</a>
                         </li>
                         <hr>
                     </div>
-                    @else
-                    @php
-                    $foundJobs = false;
-                    @endphp
                     @endif
                     @endforeach
-                    @if( $foundJobs == false)
-                    <p>Sorry, there are no jobs available for you at the moment.</p>
+                    @else
+                    <p>No jobs available at the moment.</p>
                     @endif
+
+                    @if (!$foundJobs)
+                    <p>Sorry, there are no further jobs available for you at the moment.</p>
+                    @endif
+
 
                 </div>
                 <div class="container-fluid" id="content2" style="display: none;">
