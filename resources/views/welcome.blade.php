@@ -18,12 +18,12 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
-          <img src="{{ asset('storage/app_images/iphone.png')}}" class="img-fluid" alt="Demo image">
+          <img src="{{ asset('image1.jpg')}}" class="img-fluid" alt="Demo image">
         </div>
         <div class="col-md-7 content-box hero-content">
-          <span>Unlimited Data</span>
-          <h1>Digital Innovation and the <b>Future of Digital Marketing</b></h1>
-          <p>Boost your digital marketing campaigns and increase your conversion rates</p>
+          <span>Future is here</span>
+          <h1>Welcome to Build With Us  <b>Where Construction Meets Excellence.</b></h1>
+          <p>Your Dream Project, Our Skilled Hands.Crafting Tomorrow's Spaces Today</p>
           <a href="#" class="btn btn-regular">Learn more</a>
         </div>
       </div>
