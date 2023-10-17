@@ -38,7 +38,7 @@ class ProfileController extends Controller
             'alternate_contact_no' => 'nullable|string|max:20',
             'date_of_birth' => 'nullable|date',
             'adhaar_card' => 'nullable|string|max:12',
-            'upi_id' => 'nullable|string|max:20',
+            'upi_id' => ['nullable', 'string', 'max:20', 'upi_id_format'],
             'skill_set' => 'nullable|string',
             'resume' => 'nullable|mimes:pdf,doc,docx|max:1024',
         ]);
@@ -117,7 +117,7 @@ class ProfileController extends Controller
         return view('findPeople');
     }
 
-    public function findPeople(Request $request){
+    public function findPeople(Request $request) {
 
         $validatedData = $request->validate([
             'search' => 'required|string|max:255',
@@ -128,10 +128,23 @@ class ProfileController extends Controller
         $results = User::where('name', 'LIKE', "%{$search}%")
             ->orWhere('username', 'LIKE', "%{$search}%")
             ->orWhere('email', 'LIKE', "%{$search}%")
+            ->orWhereHas('profile', function ($query) use ($search) {
+                $query->where('street_address', 'LIKE', "%{$search}%")
+                    ->orWhere('country', 'LIKE', "%{$search}%")
+                    ->orWhere('state', 'LIKE', "%{$search}%")
+                    ->orWhere('city', 'LIKE', "%{$search}%")
+                    ->orWhere('pin_code', 'LIKE', "%{$search}%")
+                    ->orWhere('contact_no', 'LIKE', "%{$search}%")
+                    ->orWhere('alternate_contact_no', 'LIKE', "%{$search}%")
+                    ->orWhere('date_of_birth', 'LIKE', "%{$search}%")
+                    ->orWhere('adhaar_card', 'LIKE', "%{$search}%")
+                    ->orWhereRaw("JSON_CONTAINS(skill_set, ?)", ["\"$search\""]);
+            })
             ->get();
 
         return view('findPeople', compact('results'));
     }
+
 }
 
 
