@@ -56,7 +56,10 @@
                         <li class="list-group-item"><strong>Alternate Contact No:</strong> {{ $profile->alternate_contact_no ?? 'N/A' }}</li>
                         <li class="list-group-item"><strong>Date of Birth:</strong> {{ $profile->date_of_birth ? date('Y-m-d', strtotime($profile->date_of_birth)) : 'N/A' }}</li>
 
-                        <li class="list-group-item"><strong>Aadhaar Card:</strong> {{ $profile->adhaar_card ?? 'N/A' }}</li>
+                        <li class="list-group-item">
+                            <strong>Aadhaar Card:</strong> {{ $profile->adhaar_card ? 'XXXX-XXXX-' . substr($profile->adhaar_card, -4) : 'N/A' }}
+                        </li>
+
                         <li class="list-group-item"><strong>UPI ID:</strong> {{ $profile->upi_id ?? 'N/A' }}</li>
                         <li class="list-group-item"> <strong>Set of Skills: </strong>
                             <ul class="list-group">
@@ -117,7 +120,7 @@
 
         <div class="form-group">
             <label for="street_address">Street Address:</label>
-            <input type="text" class="form-control" id="street_address" name="street_address" value="{{ $user->profile ? $user->profile->adhaar_card : '' }}">
+            <input type="password" class="form-control" id="street_address" name="street_address" value="{{ $user->profile ? $user->profile->adhaar_card : '' }}">
         </div>
 
 
@@ -163,8 +166,9 @@
 
         <div class="form-group">
             <label for="adhaar_card">Aadhaar Card:</label>
-            <input type="text" class="form-control" id="adhaar_card" name="adhaar_card" value="{{ $user->profile ? $user->profile->adhaar_card : '' }}">
+            <input type="password" class="form-control" id="adhaar_card" name="adhaar_card" value="{{ $user->profile ? $user->profile->adhaar_card : '' }}">
         </div>
+
 
         <div class="form-group">
             <label for="skill_set">Skill Set (Separate skills with commas):</label>
@@ -179,7 +183,7 @@
         </div>
 
         <div class="form-group my-3">
-        <button type="submit" value="submit" class="btn btn-success">Save Changes</button>
+            <button type="submit" value="submit" class="btn btn-success">Save Changes</button>
         </div>
     </form>
 
@@ -260,17 +264,17 @@
         });
     });
 
-    document.getElementById('update-profile-form').addEventListener('submit', function (e) {
-            var skillSetInput = document.getElementById('skill_set').value;
-            var isValid = /^[\w\s]+(,\s[\w\s]+)*$/.test(skillSetInput); // Check for words separated by commas and spaces
-            if (!isValid) {
-                console.log("Not Valid text");
-                e.preventDefault(); // Prevent form submission
-                alert('Please enter a valid skill set, separated by commas and spaces.');
-            } else {
-                console.log("Valid text");
-            }
-        });
+    document.getElementById('update-profile-form').addEventListener('submit', function(e) {
+        var skillSetInput = document.getElementById('skill_set').value;
+        var isValid = /^[\w\s]+(,\s[\w\s]+)*$/.test(skillSetInput); // Check for words separated by commas and spaces
+        if (!isValid) {
+            console.log("Not Valid text");
+            e.preventDefault(); // Prevent form submission
+            alert('Please enter a valid skill set, separated by commas and spaces.');
+        } else {
+            console.log("Valid text");
+        }
+    });
 </script>
 @endsection
 

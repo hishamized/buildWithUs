@@ -41,6 +41,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('showFindPeople') }}">Find People</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('showFindJobs') }}">Find Jobs</a>
+                </li>
                 @endauth
             </ul>
         </div>
